@@ -7,29 +7,29 @@
 const trips = [
   { id: 'demo-italy', title:"Italy · Summer 2024", sub:"June 12 — July 3 · with Marco & Sarah", stats:{stops:6,days:21,photos:142,rec:8},
     stops:[
-      {name:"Rome",emoji:"🇮🇹",date:"Jun 12–16",x:18,y:42,tags:["culture","food","✨ gem"],narration:"Rome doesn't ask for your attention — it commands it.",color:"red",pol:"🏛️",polcap:"Pantheon, dawn",rec:true},
-      {name:"Florence",emoji:"🇮🇹",date:"Jun 17–20",x:28,y:30,tags:["art","food"],narration:"The Oltrarno neighborhood is where Florence actually lives.",color:"red",pol:"🌉",polcap:"Ponte Vecchio",rec:true},
-      {name:"Cinque Terre",emoji:"🇮🇹",date:"Jun 21–23",x:16,y:24,tags:["hiking","coast"],narration:"Swam in water so clear it felt invented.",color:"gold",pol:"🏖️",polcap:"Vernazza trail",rec:true},
-      {name:"Venice",emoji:"🇮🇹",date:"Jun 24–26",x:38,y:20,tags:["culture"],narration:"Worth two nights. Not more. Get completely lost.",color:"blue",pol:"🚣",polcap:"Early gondola"},
-      {name:"Amalfi",emoji:"🇮🇹",date:"Jun 27–Jul 1",x:32,y:60,tags:["coast","food"],narration:"Drove the coast road at sunset. One of the best decisions of my life.",color:"gold",pol:"🌺",polcap:"Positano cliff",rec:true},
-      {name:"Sicily",emoji:"🇮🇹",date:"Jul 1–3",x:46,y:72,tags:["food","culture"],narration:"The arancini at Mercato del Capo changed how I think about food.",color:"gold",pol:"🍊",polcap:"Palermo market",rec:true}
+      {name:"Rome",emoji:"🇮🇹",date:"Jun 12–16",lat:41.9028,lng:12.4964,x:18,y:42,tags:["culture","food","✨ gem"],narration:"Rome doesn't ask for your attention — it commands it.",color:"red",pol:"🏛️",polcap:"Pantheon, dawn",rec:true},
+      {name:"Florence",emoji:"🇮🇹",date:"Jun 17–20",lat:43.7696,lng:11.2558,x:28,y:30,tags:["art","food"],narration:"The Oltrarno neighborhood is where Florence actually lives.",color:"red",pol:"🌉",polcap:"Ponte Vecchio",rec:true},
+      {name:"Cinque Terre",emoji:"🇮🇹",date:"Jun 21–23",lat:44.1461,lng:9.6439,x:16,y:24,tags:["hiking","coast"],narration:"Swam in water so clear it felt invented.",color:"gold",pol:"🏖️",polcap:"Vernazza trail",rec:true},
+      {name:"Venice",emoji:"🇮🇹",date:"Jun 24–26",lat:45.4408,lng:12.3155,x:38,y:20,tags:["culture"],narration:"Worth two nights. Not more. Get completely lost.",color:"blue",pol:"🚣",polcap:"Early gondola"},
+      {name:"Amalfi",emoji:"🇮🇹",date:"Jun 27–Jul 1",lat:40.6340,lng:14.6027,x:32,y:60,tags:["coast","food"],narration:"Drove the coast road at sunset. One of the best decisions of my life.",color:"gold",pol:"🌺",polcap:"Positano cliff",rec:true},
+      {name:"Sicily",emoji:"🇮🇹",date:"Jul 1–3",lat:38.1157,lng:13.3615,x:46,y:72,tags:["food","culture"],narration:"The arancini at Mercato del Capo changed how I think about food.",color:"gold",pol:"🍊",polcap:"Palermo market",rec:true}
     ]
   },
   { id: 'demo-japan', title:"Japan · Spring 2024", sub:"March 28 — April 14 · solo", stats:{stops:5,days:17,photos:312,rec:11},
     stops:[
-      {name:"Tokyo",emoji:"🇯🇵",date:"Mar 28–Apr 4",x:72,y:28,tags:["food","city"],narration:"Seven days and I could have stayed seven more.",color:"red",pol:"🗼",polcap:"Shinjuku midnight",rec:true},
-      {name:"Kyoto",emoji:"🇯🇵",date:"Apr 5–8",x:60,y:38,tags:["temples","✨ gem"],narration:"Fushimi Inari before dawn. Nobody but foxes.",color:"gold",pol:"⛩️",polcap:"Fushimi 5am",rec:true},
-      {name:"Nara",emoji:"🇯🇵",date:"Apr 9",x:62,y:44,tags:["nature"],narration:"The deer bowed back.",color:"red",pol:"🦌",polcap:"The famous bow",rec:true},
-      {name:"Osaka",emoji:"🇯🇵",date:"Apr 10–12",x:58,y:46,tags:["food"],narration:"Takoyaki for every meal, no regrets.",color:"red",pol:"🌃",polcap:"Dotonbori",rec:true},
-      {name:"Hakone",emoji:"🇯🇵",date:"Apr 13–14",x:68,y:34,tags:["nature","onsen"],narration:"Fuji appeared once, perfectly framed, then vanished.",color:"gold",pol:"🗻",polcap:"Fuji glimpse",rec:true}
+      {name:"Tokyo",emoji:"🇯🇵",date:"Mar 28–Apr 4",lat:35.6762,lng:139.6503,x:72,y:28,tags:["food","city"],narration:"Seven days and I could have stayed seven more.",color:"red",pol:"🗼",polcap:"Shinjuku midnight",rec:true},
+      {name:"Kyoto",emoji:"🇯🇵",date:"Apr 5–8",lat:35.0116,lng:135.7681,x:60,y:38,tags:["temples","✨ gem"],narration:"Fushimi Inari before dawn. Nobody but foxes.",color:"gold",pol:"⛩️",polcap:"Fushimi 5am",rec:true},
+      {name:"Nara",emoji:"🇯🇵",date:"Apr 9",lat:34.6851,lng:135.8050,x:62,y:44,tags:["nature"],narration:"The deer bowed back.",color:"red",pol:"🦌",polcap:"The famous bow",rec:true},
+      {name:"Osaka",emoji:"🇯🇵",date:"Apr 10–12",lat:34.6937,lng:135.5022,x:58,y:46,tags:["food"],narration:"Takoyaki for every meal, no regrets.",color:"red",pol:"🌃",polcap:"Dotonbori",rec:true},
+      {name:"Hakone",emoji:"🇯🇵",date:"Apr 13–14",lat:35.2324,lng:139.1072,x:68,y:34,tags:["nature","onsen"],narration:"Fuji appeared once, perfectly framed, then vanished.",color:"gold",pol:"🗻",polcap:"Fuji glimpse",rec:true}
     ]
   },
   { id: 'demo-portugal', title:"Portugal · Fall 2023", sub:"Sept 8–22 · with Jamie", stats:{stops:4,days:14,photos:87,rec:6},
     stops:[
-      {name:"Lisbon",emoji:"🇵🇹",date:"Sept 8–12",x:8,y:40,tags:["music","food"],narration:"Fado on a Tuesday in Alfama, wine for four euros.",color:"gold",pol:"🎸",polcap:"Fado in Alfama",rec:true},
-      {name:"Sintra",emoji:"🇵🇹",date:"Sept 13",x:6,y:38,tags:["castles"],narration:"Go early before the coaches arrive.",color:"red",pol:"🏰",polcap:"Pena Palace"},
-      {name:"Porto",emoji:"🇵🇹",date:"Sept 14–18",x:8,y:30,tags:["wine","✨ gem"],narration:"I preferred Porto to Lisbon and cannot fully explain why.",color:"gold",pol:"🌉",polcap:"Dom Luís dusk",rec:true},
-      {name:"Algarve",emoji:"🇵🇹",date:"Sept 19–22",x:10,y:52,tags:["coast","beach"],narration:"Kayaked through sea caves in water so cold it hurt.",color:"red",pol:"🏖️",polcap:"Piedade caves",rec:true}
+      {name:"Lisbon",emoji:"🇵🇹",date:"Sept 8–12",lat:38.7223,lng:-9.1393,x:8,y:40,tags:["music","food"],narration:"Fado on a Tuesday in Alfama, wine for four euros.",color:"gold",pol:"🎸",polcap:"Fado in Alfama",rec:true},
+      {name:"Sintra",emoji:"🇵🇹",date:"Sept 13",lat:38.7978,lng:-9.3876,x:6,y:38,tags:["castles"],narration:"Go early before the coaches arrive.",color:"red",pol:"🏰",polcap:"Pena Palace"},
+      {name:"Porto",emoji:"🇵🇹",date:"Sept 14–18",lat:41.1579,lng:-8.6291,x:8,y:30,tags:["wine","✨ gem"],narration:"I preferred Porto to Lisbon and cannot fully explain why.",color:"gold",pol:"🌉",polcap:"Dom Luís dusk",rec:true},
+      {name:"Algarve",emoji:"🇵🇹",date:"Sept 19–22",lat:37.0990,lng:-8.6733,x:10,y:52,tags:["coast","beach"],narration:"Kayaked through sea caves in water so cold it hurt.",color:"red",pol:"🏖️",polcap:"Piedade caves",rec:true}
     ]
   }
 ];

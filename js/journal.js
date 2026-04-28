@@ -1,6 +1,7 @@
-/* ── JOURNAL (CORK BOARD) ──────────────────────────── */
+/* ── JOURNAL (MAP BOARD) ────────────────────────────── */
 
 let curTrip = 0, boardMode = 'journal', selStop = null;
+let _map = null, _markers = [], _pinEls = [];
 
 function initJournal() { renderBoard(); }
 
@@ -13,49 +14,112 @@ function renderBoard() {
   document.getElementById('jsbPhotos').textContent = t.stats.photos;
   document.getElementById('jsbRec').textContent    = t.stats.rec;
 
-  const board = document.getElementById('corkboard');
-  document.querySelectorAll('.pin,.polaroid').forEach(e => e.remove());
+  _initMap(t);
+  renderStopList(t.stops);
+}
 
-  const svg = document.getElementById('stringsSvg');
-  svg.innerHTML = '';
-  if (boardMode === 'journal') {
-    t.stops.forEach((s, i) => {
-      if (i >= t.stops.length - 1) return;
-      const b = t.stops[i + 1];
-      const x1=s.x*10, y1=s.y*7, x2=b.x*10, y2=b.y*7;
-      const cx=(x1+x2)/2+(Math.random()-.5)*50, cy=(y1+y2)/2+(Math.random()-.5)*35;
-      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-      path.setAttribute('d', `M${x1},${y1} Q${cx},${cy} ${x2},${y2}`);
-      path.setAttribute('class','trip-string');
-      path.style.animationDelay = `${i*0.18}s`;
-      svg.appendChild(path);
+function _initMap(t) {
+  const el = document.getElementById('corkboard');
+
+  document.querySelectorAll('.polaroid').forEach(e => e.remove());
+  document.getElementById('stringsSvg').innerHTML = '';
+
+  _markers.forEach(m => m.remove());
+  _markers = [];
+  _pinEls = [];
+
+  // Init map once — Voyager tiles for warm tone, zoom in bottom-right
+  if (!_map) {
+    _map = L.map('corkboard', {
+      zoomControl: false,
+      attributionControl: false,
+      scrollWheelZoom: true,
     });
+
+    // Warmer CartoDB Voyager tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+    }).addTo(_map);
+
+    // Zoom control bottom-right
+    L.control.zoom({ position: 'bottomright' }).addTo(_map);
+
+    // Minimal attribution bottom-right
+    L.control.attribution({ prefix: false, position: 'bottomright' })
+      .addAttribution('© CARTO © OSM')
+      .addTo(_map);
   }
 
-  t.stops.forEach((s, i) => {
-    const delay = i * 0.09;
+  const stops = t.stops.filter(s => s.lat && s.lng);
+  if (!stops.length) return;
 
-    const pin = document.createElement('div');
-    pin.className = 'pin';
-    pin.style.cssText = `left:${s.x}%;top:${s.y}%;animation-delay:${delay}s;`;
-    pin.innerHTML = `<div class="pin-tooltip">${s.name}</div><div class="pin-body ${boardMode==='guide'&&s.rec?'gold':s.color}"><span class="pin-num">${i+1}</span></div>`;
-    pin.onclick = () => openStopDetail(s, i);
-    board.appendChild(pin);
+  const colorMap = { red: '#d94040', gold: '#f0c040', blue: '#4090d0' };
 
-    if (boardMode === 'journal') {
-      const rots = [-6,3,-4,5,-2,4,-3,2];
-      const rot = rots[i % rots.length];
-      const ox = (Math.random()-.5)*75, oy = (Math.random()-.5)*55;
-      const pol = document.createElement('div');
-      pol.className = 'polaroid';
-      pol.style.cssText = `left:calc(${s.x}%+${ox+20}px);top:calc(${s.y}%+${oy+12}px);--rot:rotate(${rot}deg);transform:rotate(${rot}deg);animation-delay:${delay+0.14}s;`;
-      pol.innerHTML = `<div class="polaroid-inner"><div class="pol-photo" style="background:${polBg(i)};">${s.pol}</div><div class="pol-caption">${s.polcap||s.name}</div></div>`;
-      pol.onclick = () => openStopDetail(s, i);
-      board.appendChild(pol);
-    }
+  stops.forEach((s, i) => {
+    const c = boardMode === 'guide' && s.rec ? '#f0c040' : (colorMap[s.color] || '#f0c040');
+    const isDark = c === '#f0c040';
+
+    const icon = L.divIcon({
+      className: '',
+      html: `
+        <div class="map-pin-wrap" data-idx="${i}">
+          <div class="map-pin-body" style="background:radial-gradient(circle at 35% 35%, ${c}, ${c}bb);">
+            <span class="pin-num" style="color:${isDark ? '#1a0e00' : '#fff'}">${i + 1}</span>
+          </div>
+          <div class="map-pin-label">${s.name}</div>
+          <div class="map-pin-polaroid" style="display:none;">
+            <div class="pol-photo" style="background:${polBg(i)};font-size:22px;display:flex;align-items:center;justify-content:center;width:72px;height:72px;">${s.pol}</div>
+            <div class="pol-caption">${s.polcap || s.name}</div>
+          </div>
+        </div>`,
+      iconSize: [80, 60],
+      iconAnchor: [20, 50],
+    });
+
+    const marker = L.marker([s.lat, s.lng], { icon })
+      .addTo(_map)
+      .on('click', () => openStopDetail(s, i));
+
+    _markers.push(marker);
   });
 
-  renderStopList(t.stops);
+  // Route line — thicker, warmer, with drop shadow via two layered lines
+  if (boardMode === 'journal' && stops.length > 1) {
+    const latlngs = stops.map(s => [s.lat, s.lng]);
+    // Shadow line (slightly wider, dark)
+    const shadow = L.polyline(latlngs, {
+      color: 'rgba(0,0,0,0.15)',
+      weight: 5,
+      dashArray: '8 10',
+    }).addTo(_map);
+    // Main line
+    const line = L.polyline(latlngs, {
+      color: 'rgba(200,146,10,0.8)',
+      weight: 3,
+      dashArray: '8 10',
+    }).addTo(_map);
+    _markers.push(shadow, line);
+  }
+
+  // Fit bounds with extra padding so Sicily/edge stops aren't clipped
+  const bounds = L.latLngBounds(stops.map(s => [s.lat, s.lng]));
+  setTimeout(() => {
+    _map.invalidateSize();
+    _map.fitBounds(bounds, { padding: [90, 90], maxZoom: 8 });
+  }, 80);
+
+  // Store pin DOM refs after map renders for active highlight
+  setTimeout(() => {
+    _pinEls = Array.from(document.querySelectorAll('.map-pin-wrap'));
+    _highlightPin(selStop);
+  }, 300);
+}
+
+// Highlight the active pin on the map
+function _highlightPin(idx) {
+  _pinEls.forEach((el, i) => {
+    el.classList.toggle('map-pin-active', i === idx);
+  });
 }
 
 function polBg(i) {
@@ -64,6 +128,7 @@ function polBg(i) {
 
 function openStopDetail(s, i) {
   selStop = i;
+  _highlightPin(i);
   renderStopList(trips[curTrip].stops);
   showToast(`📍 ${s.name} · ${s.date}`);
   track('Stop Tapped', { stop: s.name, trip: trips[curTrip].title });
