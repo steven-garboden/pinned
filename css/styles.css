@@ -175,7 +175,7 @@ body::after {
   font-weight: 300;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(246,238,220,0.42);
+  color: rgba(255,255,255,0.75);
   cursor: pointer;
   transition: color 0.2s, background 0.2s;
   position: relative;
@@ -191,7 +191,7 @@ body::after {
   transform: translateX(-50%);
   transition: width 0.25s var(--ease-out);
 }
-.nav-link:hover { color: rgba(246,238,220,0.78); }
+.nav-link:hover { color: #ffffff; }
 .nav-link:hover::after { width: 50%; }
 .nav-link.active { color: var(--gold2); }
 .nav-link.active::after { width: 50%; }
@@ -207,7 +207,7 @@ body::after {
   border-radius: 50%;
   border: 1px solid var(--mist2);
   background: var(--mist);
-  color: rgba(246,238,220,0.5);
+  color: rgba(255,255,255,0.75);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-size: 14px;
@@ -215,7 +215,7 @@ body::after {
 }
 .nav-icon-btn:hover {
   background: var(--mist2);
-  color: var(--parchment);
+  color: #ffffff;
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(0,0,0,0.3);
 }
@@ -501,7 +501,7 @@ body::after {
 }
 .l-pill-btn:hover {
   background: rgba(255,255,255,0.08);
-  color: rgba(246,238,220,0.75);
+  color: rgba(255,255,255,0.75);
   border-color: rgba(255,255,255,0.14);
   transform: translateY(-1px);
 }
@@ -626,7 +626,7 @@ body::after {
    ═══════════════════════════════════════════════ */
 #screen-journal {
   padding-top: var(--nav-h);
-  background: var(--cork);
+  background: #e8e0d5;
 }
 
 .board-wrap {
@@ -634,40 +634,65 @@ body::after {
   height: calc(100vh - var(--nav-h));
 }
 
-/* Cork surface */
+/* Google Maps-style surface */
 .corkboard {
   flex: 1;
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 30% 40%, #cdb28a 0%, #c4a47a 40%, #b8956a 100%);
+  background-color: #e8e0d5;
+  /* Land patches — parks (green) and water (blue) */
+  background-image:
+    /* water patch top-right */
+    radial-gradient(ellipse 28% 18% at 78% 14%, #b3d9f0 0%, transparent 100%),
+    /* park patch mid-left */
+    radial-gradient(ellipse 22% 16% at 18% 55%, #c8e6c0 0%, transparent 100%),
+    /* park patch bottom-right */
+    radial-gradient(ellipse 18% 14% at 82% 78%, #c8e6c0 0%, transparent 100%),
+    /* water patch bottom-left */
+    radial-gradient(ellipse 24% 15% at 12% 88%, #b3d9f0 0%, transparent 100%),
+    /* subtle land color variation */
+    radial-gradient(ellipse 60% 50% at 50% 50%, #ede8df 0%, #e2d9cc 100%);
 }
 
-/* Cork texture */
+/* Road grid — major roads (wider, lighter) */
 .corkboard::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(100,60,20,0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(100,60,20,0.07) 1px, transparent 1px);
-  background-size: 38px 38px;
+    /* major roads horizontal */
+    linear-gradient(rgba(255,255,255,0.85) 2px, transparent 2px),
+    /* major roads vertical */
+    linear-gradient(90deg, rgba(255,255,255,0.85) 2px, transparent 2px),
+    /* minor roads horizontal */
+    linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+    /* minor roads vertical */
+    linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+  background-size:
+    120px 120px,
+    120px 120px,
+    40px 40px,
+    40px 40px;
   pointer-events: none;
 }
+
+/* Block fill — the slightly darker squares between roads */
 .corkboard::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  background-image:
+    linear-gradient(rgba(210,200,188,0.35) 39px, transparent 39px),
+    linear-gradient(90deg, rgba(210,200,188,0.35) 39px, transparent 39px);
+  background-size: 40px 40px;
   pointer-events: none;
-  opacity: 0.55;
 }
 
 /* Vignette on board edges */
 .board-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.18) 100%);
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.08) 100%);
   pointer-events: none;
   z-index: 1;
 }
