@@ -1,0 +1,21 @@
+# Config with real API keys (copy config.example.js → config.js and fill in)
+js/config.js
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Supabase local dev
+.supabase/
+
+# Node (if you add a build step later)
+node_modules/
+dist/
